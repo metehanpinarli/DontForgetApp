@@ -16,20 +16,30 @@ class CacheBloc extends Bloc<CacheEvent, CacheState> {
   }
 
   Future<void> _onCacheSet(event, emit) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    pref.setBool("switchMode", event.cacheModel.switchMode);
-    pref.setString("time", event.cacheModel.time.toString());
-    emit(CacheCompleted(CacheModel(event.cacheModel.time, event.cacheModel.switchMode)));
-  }
-
-
-  Future<void> _onCacheGet(event, emit) async {
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    bool? switchMode = pref.getBool("switchMode");
-    if(switchMode!=null){
-      DateTime? time = DateTime.parse(pref.getString("time")!);
-      emit(CacheCompleted(CacheModel(time, switchMode)));
+    try {
+      emit(CacheLoading());
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      pref.setBool("switchMode", event.cacheModel.switchMode);
+      pref.setString("time", event.cacheModel.time.toString());
+      emit(CacheCompleted(CacheModel(event.cacheModel.time, event.cacheModel.switchMode)));
+    } catch (e) {
+      emit(CacheError("Hata Oluştu!"));
     }
   }
 
+  Future<void> _onCacheGet(event, emit) async {
+    try {
+      emit(CacheLoading());
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      bool? switchMode = pref.getBool("switchMode");
+      if (switchMode != null) {
+        DateTime? time = DateTime.parse(pref.getString("time")!);
+        emit(CacheCompleted(CacheModel(time, switchMode)));
+      }else{
+        emit(CacheInitial());
+      }
+    } catch (e) {
+      emit(CacheError("Hata oluştu!"));
+    }
+  }
 }

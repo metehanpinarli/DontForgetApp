@@ -56,24 +56,36 @@ class _HomeViewState extends State<HomeView> {
   BlocBuilder<CacheBloc, CacheState> buildBlocBuilder() {
     return BlocBuilder<CacheBloc, CacheState>(
       builder: (context, state) {
-        if (state is CacheCompleted) {
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              buildCustomText(context: context, text: DateFormat('hh:mm:ss').format(state.cacheModel.time).toString()),
-              buildCupertinoSwitch(value: state.cacheModel.switchMode, context: context),
-            ],
-          );
+        if (state is CacheLoading) {
+          return const CircularProgressIndicator();
+        } else if (state is CacheCompleted) {
+          return buildCacheCompletedColumn(context, state);
+        } else if (state is CacheError) {
+          return Text(state.message);
         }
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            buildCustomText(context: context, text: "HI!"),
-            buildCupertinoSwitch(context: context, value: false),
-          ],
-        );
+        return buildColumn(context);
       },
     );
+  }
+
+  Column buildColumn(BuildContext context) {
+    return Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          buildCustomText(context: context, text: "HI!"),
+          buildCupertinoSwitch(context: context, value: false),
+        ],
+      );
+  }
+
+  Column buildCacheCompletedColumn(BuildContext context, CacheCompleted state) {
+    return Column(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            buildCustomText(context: context, text: DateFormat('hh:mm:ss').format(state.cacheModel.time).toString()),
+            buildCupertinoSwitch(value: state.cacheModel.switchMode, context: context),
+          ],
+        );
   }
 
   CupertinoSwitch buildCupertinoSwitch({required BuildContext context, required bool value}) {
