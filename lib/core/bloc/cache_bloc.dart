@@ -15,7 +15,7 @@ class CacheBloc extends Bloc<CacheEvent, CacheState> {
     on<CacheGet>(_onCacheGet);
   }
 
-  FutureOr<void> _onCacheSet(event, emit) async {
+  Future<void> _onCacheSet(event, emit) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setBool("switchMode", event.cacheModel.switchMode);
     pref.setString("time", event.cacheModel.time.toString());
@@ -23,7 +23,7 @@ class CacheBloc extends Bloc<CacheEvent, CacheState> {
   }
 
 
-  FutureOr<void> _onCacheGet(event, emit) async {
+  Future<void> _onCacheGet(event, emit) async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     bool? switchMode = pref.getBool("switchMode");
     if(switchMode!=null){
