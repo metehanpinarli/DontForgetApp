@@ -1,9 +1,11 @@
-import 'package:dont_forget/core/bloc/cache_bloc.dart';
+import 'package:dont_forget/bloc/entry_bloc.dart';
+import 'package:dont_forget/injectable.dart';
 import 'package:dont_forget/view/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
+  setupLocator();
   runApp(const MyApp());
 }
 
@@ -13,7 +15,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CacheBloc(),
+      create: (context) => locator<EntryBloc>(),
       child: MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,

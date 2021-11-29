@@ -38,6 +38,8 @@ dependencies:
   flutter_bloc: ^8.0.0
   shared_preferences: ^2.0.9
   kartal: ^2.2.0
+  dartz: ^0.10.0
+  get_it: ^7.2.0
 
 dev_dependencies:
   flutter_test:
