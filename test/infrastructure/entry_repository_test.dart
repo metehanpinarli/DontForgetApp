@@ -8,11 +8,10 @@ import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MockSharedPreferences extends Mock implements SharedPreferences {}
-class MockCacheManager extends Mock implements CacheManager{}
 
 void main() {
   late MockSharedPreferences mockSharedPreferences;
-  late MockCacheManager mockCacheManager;
+  late CacheManager cacheManager;
   late EntryRepository entryRepository;
   late String testStringDateTime;
   late DateTime testDateTime;
@@ -23,8 +22,8 @@ void main() {
     //SharedPreferences'ı dışarıdan aldığım için SharedPreferencesın kendi mockunu kullanmama gerek kalmadı.
     //SharedPreferences.setMockInitialValues({"switchMode": true, "time": DateTime.april.toString()});
     mockSharedPreferences = MockSharedPreferences();
-    mockCacheManager=MockCacheManager();
-    entryRepository = EntryRepository(mockCacheManager);
+    cacheManager = CacheManager(mockSharedPreferences);
+    entryRepository = EntryRepository(cacheManager);
     testStringDateTime = "2021-11-30 17:40:08.067784";
     testSwitchMode = true;
     testDateTime = DateTime.parse("2021-11-30 17:40:08.067784");
@@ -40,8 +39,8 @@ void main() {
 
         final result = await entryRepository.readCache();
 
-        // verify(mockSharedPreferences.getString("time"));
-        // verify(mockSharedPreferences.getBool("switchMode"));
+        verify(mockSharedPreferences.getString("time"));
+        verify(mockSharedPreferences.getBool("switchMode"));
 
         expect(result, equals(Right<Failure, EntryModel>(EntryModel(testDateTime, testSwitchMode))));
       },
@@ -74,25 +73,28 @@ void main() {
     );
   });
 
-  // group('saveCache', () {
-  //   test(
-  //     'Should return unit |Successful',
-  //     () async {
-  //       //mockSharedPreferences ile çalışmadı SharedPreferences gitmedi
-  //       final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  //       final result = await EntryRepository(sharedPreferences).saveCache(entryModel: testEntryModel);
-  //       expect(result, equals(const Right<Failure, Unit>(unit)));
-  //     },
-  //   );
-  //
-  //   test(
-  //     'Should return CacheFailure |sharedPreferences Null',
-  //     () async {
-  //       // act
-  //       final result = await entryRepository.saveCache(entryModel:testEntryModel);
-  //
-  //       expect(result, equals( const Left<Failure, Unit>(CacheFailure("Hata"))));
-  //     },
-  //   );
-  // });
+  group('saveCache', () {
+    test(
+      'Should return unit |Successful',
+      () async {
+
+        //mockSharedPreferences ile çalışmadı SharedPreferences gitmedi
+        final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+        final CacheManager cacheManager = CacheManager(sharedPreferences);
+        final result = await EntryRepository(cacheManager).saveCache(entryModel: testEntryModel);
+
+        expect(result, equals(const Right<Failure, Unit>(unit)));
+      },
+    );
+
+    test(
+      'Should return CacheFailure |sharedPreferences Null',
+      () async {
+        // act
+        final result = await entryRepository.saveCache(entryModel: testEntryModel);
+
+        expect(result, equals(const Left<Failure, Unit>(CacheFailure("Hata"))));
+      },
+    );
+  });
 }
