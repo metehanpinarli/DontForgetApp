@@ -22,6 +22,7 @@ void main() {
 
   group("EntryGet", () {
     test(
+      //type 'Null' is not a subtype of type 'Future<Either<Failure, EntryModel>>'bütün bloc için açtığım testlerde bu hatayı alıyorum
       'EntryGet |Successful',
           () async {
        when(mockEntryRepository.readCache()).thenAnswer((_) async => Right<Failure,EntryModel>(testEntryModel));
