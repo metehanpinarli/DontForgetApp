@@ -11,13 +11,13 @@ class CardContents extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<EntryBloc, CacheState>(
+    return BlocBuilder<EntryBloc, EntryState>(
       builder: (context, state) {
-        if (state is CacheLoading) {
+        if (state is EntryLoading) {
           return const Center(child: CircularProgressIndicator());
-        } else if (state is CacheCompleted) {
+        } else if (state is EntryCompleted) {
           return buildCacheCompletedColumn(state);
-        } else if (state is CacheError) {
+        } else if (state is EntryError) {
           return Center(child: Text(state.message));
         }
         return buildColumn();
@@ -32,7 +32,7 @@ class CardContents extends StatelessWidget {
       );
   }
 
-  Column buildCacheCompletedColumn(CacheCompleted state) {
+  Column buildCacheCompletedColumn(EntryCompleted state) {
     return Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [

@@ -1,13 +1,13 @@
 part of 'entry_bloc.dart';
 
 @immutable
-abstract class CacheEvent {}
+abstract class EntryEvent {}
 
-class CacheSet extends CacheEvent {
+class EntrySet extends EntryEvent {
   final EntryModel entryModel;
-  CacheSet(this.entryModel);
+  EntrySet(this.entryModel);
 }
 
-class CacheGet extends CacheEvent {
-  CacheGet();
+class EntryGet extends EntryEvent {
+  EntryGet();
 }

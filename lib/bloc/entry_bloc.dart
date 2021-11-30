@@ -9,23 +9,23 @@ part 'entry_event.dart';
 
 part 'entry_state.dart';
 
-class EntryBloc extends Bloc<CacheEvent, CacheState> {
+class EntryBloc extends Bloc<EntryEvent, EntryState> {
   final EntryRepository _entryRepository;
 
-  EntryBloc(this._entryRepository) : super(CacheInitial()) {
-    on<CacheSet>(_onCacheSet);
-    on<CacheGet>(_onCacheGet);
+  EntryBloc(this._entryRepository) : super(EntryInitial()) {
+    on<EntrySet>(_onCacheSet);
+    on<EntryGet>(_onCacheGet);
   }
 
   Future<void> _onCacheSet(event, emit) async {
-    emit(CacheLoading());
+    emit(EntryLoading());
     final failureOrUnit = await _entryRepository.saveCache(entryModel:event.entryModel);
-    failureOrUnit.fold((failure)=>emit(failure.message), (unit) => emit(CacheCompleted(EntryModel(event.entryModel.time, event.entryModel.switchMode))));
+    failureOrUnit.fold((failure)=>emit(failure.message), (unit) => emit(EntryCompleted(EntryModel(event.entryModel.time, event.entryModel.switchMode))));
   }
 
   Future<void> _onCacheGet(event, emit) async {
-    emit(CacheLoading());
+    emit(EntryLoading());
     final failureOrEntryModel = await _entryRepository.readCache();
-    failureOrEntryModel.fold((failure) =>failure is NullValueFailure?emit(CacheInitial()):CacheError(failure.message), (entryModel) => emit(CacheCompleted(EntryModel(entryModel.time, entryModel.switchMode))));
+    failureOrEntryModel.fold((failure) =>failure is NullValueFailure?emit(EntryInitial()):EntryError(failure.message), (entryModel) => emit(EntryCompleted(EntryModel(entryModel.time, entryModel.switchMode))));
   }
 }

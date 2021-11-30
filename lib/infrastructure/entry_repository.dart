@@ -12,7 +12,9 @@ class EntryRepository {
     try {
       //Test aşamasında daha rahat kullanabilmek için SharedPreferences dışarıdan aldım.
       //SharedPreferences pref = await SharedPreferences.getInstance();
+      print("deneme");
       bool? switchMode = _pref.getBool("switchMode");
+      print("denem2");
       if (switchMode != null) {
         DateTime? time = DateTime.parse(_pref.getString("time")!);
         return Right(EntryModel(time, switchMode));

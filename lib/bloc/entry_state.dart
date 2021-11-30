@@ -1,18 +1,18 @@
 part of 'entry_bloc.dart';
 
 @immutable
-abstract class CacheState {}
+abstract class EntryState {}
 
-class CacheInitial extends CacheState {}
+class EntryInitial extends EntryState {}
 
-class CacheLoading extends CacheState {}
+class EntryLoading extends EntryState {}
 
-class CacheCompleted extends CacheState {
+class EntryCompleted extends EntryState {
   final EntryModel entryModel;
-  CacheCompleted(this.entryModel);
+  EntryCompleted(this.entryModel);
 }
 
-class CacheError extends CacheState {
+class EntryError extends EntryState {
   final String message;
-  CacheError(this.message);
+  EntryError(this.message);
 }

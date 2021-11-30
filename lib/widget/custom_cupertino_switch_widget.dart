@@ -13,7 +13,7 @@ class CustomCupertinoSwitch extends StatelessWidget {
     return CupertinoSwitch(
         value: value,
         onChanged: (val) {
-          BlocProvider.of<EntryBloc>(context).add(CacheSet(EntryModel(DateTime.now(), val)));
+          BlocProvider.of<EntryBloc>(context).add(EntrySet(EntryModel(DateTime.now(), val)));
         });
   }
 }

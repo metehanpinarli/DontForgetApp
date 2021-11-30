@@ -15,7 +15,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    context.read<EntryBloc>().add(CacheGet());
+    context.read<EntryBloc>().add(EntryGet());
   }
 
   @override
