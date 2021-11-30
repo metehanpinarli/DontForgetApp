@@ -4,11 +4,12 @@ import 'package:dont_forget/infrastructure/entry_repository.dart';
 import 'package:dont_forget/models/entry_model.dart';
 import 'package:dont_forget/models/failure.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MockEntryRepository extends Mock implements EntryRepository {}
-
+@GenerateMocks([EntryRepository])
 void main() {
   late MockEntryRepository mockEntryRepository;
   late EntryBloc entryBloc;
