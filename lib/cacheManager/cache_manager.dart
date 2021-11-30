@@ -6,17 +6,17 @@ class CacheManager {
   final SharedPreferences sharedPreferences;
   CacheManager(this.sharedPreferences);
 
-  bool? cacheSetSwitchMode() {
+  bool? cacheGetSwitchMode() {
     bool? switchMode = sharedPreferences.getBool("switchMode");
     return switchMode;
   }
 
-  String? cacheSetTime() {
+  String? cacheGetTime() {
     String? time= sharedPreferences.getString("time");
     return time;
   }
 
-  void cacheGet(EntryModel entryModel)  {
+  void cacheSet(EntryModel entryModel)  {
     sharedPreferences.setBool("switchMode", entryModel.switchMode);
     sharedPreferences.setString("time", entryModel.time.toString());
   }

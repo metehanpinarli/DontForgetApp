@@ -13,9 +13,9 @@ class EntryRepository {
     try {
       //Test aşamasında daha rahat kullanabilmek için SharedPreferences dışarıdan aldım.
       //SharedPreferences pref = await SharedPreferences.getInstance();
-      bool? switchMode =_cacheManager.cacheSetSwitchMode();
+      bool? switchMode =_cacheManager.cacheGetSwitchMode();
       if (switchMode != null) {
-        DateTime? time = DateTime.parse(_cacheManager.cacheSetTime()!);
+        DateTime? time = DateTime.parse(_cacheManager.cacheGetTime()!);
         return Right(EntryModel(time, switchMode));
       } else {
         return const Left(NullValueFailure("Hata"));
@@ -27,7 +27,7 @@ class EntryRepository {
 
   Future<Either<Failure, Unit>> saveCache({required EntryModel entryModel}) async {
     try {
-      _cacheManager.cacheGet(entryModel);
+      _cacheManager.cacheSet(entryModel);
       return const Right(unit);
     } catch (e) {
       return const Left(CacheFailure("Hata"));
