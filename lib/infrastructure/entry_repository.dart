@@ -4,29 +4,33 @@ import 'package:dont_forget/models/failure.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EntryRepository {
+  final SharedPreferences _pref;
+
+  const EntryRepository(this._pref);
+
   Future<Either<Failure, EntryModel>> readCache() async {
     try {
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      bool? switchMode = pref.getBool("switchMode");
+      //Test aşamasında daha rahat kullanabilmek için SharedPreferences dışarıdan aldım.
+      //SharedPreferences pref = await SharedPreferences.getInstance();
+      bool? switchMode = _pref.getBool("switchMode");
       if (switchMode != null) {
-        DateTime? time = DateTime.parse(pref.getString("time")!);
+        DateTime? time = DateTime.parse(_pref.getString("time")!);
         return Right(EntryModel(time, switchMode));
-      }else{
-        return Left(NullValueFailure("Cache Üzerinde Veri Yok"));
+      } else {
+        return const Left(NullValueFailure("Hata"));
       }
     } catch (e) {
-      return Left(CacheFailure("Hata Oluştu"));
+      return const Left(CacheFailure("Hata"));
     }
   }
 
-  Future<Either<Failure, Unit>> saveCache(EntryModel entryModel) async {
+  Future<Either<Failure, Unit>> saveCache({required EntryModel entryModel}) async {
     try {
-      SharedPreferences pref = await SharedPreferences.getInstance();
-      pref.setBool("switchMode", entryModel.switchMode);
-      pref.setString("time", entryModel.time.toString());
+      _pref.setBool("switchMode", entryModel.switchMode);
+      _pref.setString("time", entryModel.time.toString());
       return const Right(unit);
-    } catch (e) {
-      return Left(CacheFailure("Hata Oluştu"));
+    }catch (e) {
+      return const Left(CacheFailure("Hata"));
     }
   }
 }

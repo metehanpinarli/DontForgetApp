@@ -19,8 +19,8 @@ class EntryBloc extends Bloc<CacheEvent, CacheState> {
 
   Future<void> _onCacheSet(event, emit) async {
     emit(CacheLoading());
-    final failureOrUnit = await _entryRepository.saveCache(event.entryModel);
-    failureOrUnit.fold((failure)=>emit(CacheError(failure.message)), (unit) => emit(CacheCompleted(EntryModel(event.entryModel.time, event.entryModel.switchMode))));
+    final failureOrUnit = await _entryRepository.saveCache(entryModel:event.entryModel);
+    failureOrUnit.fold((failure)=>emit(failure.message), (unit) => emit(CacheCompleted(EntryModel(event.entryModel.time, event.entryModel.switchMode))));
   }
 
   Future<void> _onCacheGet(event, emit) async {

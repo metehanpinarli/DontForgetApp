@@ -4,8 +4,10 @@ import 'package:dont_forget/view/home_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-void main() {
-  setupLocator();
+Future<void> main()async {
+  //setup'da sorunsuz şekilde sharedPreferences kullanmak için gerekli.
+  WidgetsFlutterBinding.ensureInitialized();
+  await setupLocator();
   runApp(const MyApp());
 }
 
