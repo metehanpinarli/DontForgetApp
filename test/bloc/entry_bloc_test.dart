@@ -1,11 +1,7 @@
-import 'package:dartz/dartz.dart';
 import 'package:dont_forget/bloc/entry_bloc.dart';
 import 'package:dont_forget/cacheManager/cache_manager.dart';
 import 'package:dont_forget/infrastructure/entry_repository.dart';
-import 'package:dont_forget/models/entry_model.dart';
-import 'package:dont_forget/models/failure.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -24,7 +20,7 @@ void main() {
   group("EntryGet", () {
 
     test(
-      //type 'Null' is not a subtype of type 'Future<Either<Failure, EntryModel>>
+      //type 'Null' is not a subtype of type 'Future<Either<Failure, EntryModel>> çözüm(@GenerateMocks([SharedPreferences]))
       'Moc EntryGet |Successful',
           () async {
         moclanmisEntryBloc.add(EntryGet());

@@ -78,7 +78,7 @@ void main() {
       'Should return unit |Successful',
       () async {
 
-        //mockSharedPreferences ile çalışmadı SharedPreferences gitmedi
+        //mockSharedPreferences ile çalışmadı SharedPreferences gitmedi çözüm(@GenerateMocks([SharedPreferences]))
         final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
         final CacheManager cacheManager = CacheManager(sharedPreferences);
         final result = await EntryRepository(cacheManager).saveCache(entryModel: testEntryModel);
