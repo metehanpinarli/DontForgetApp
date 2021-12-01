@@ -13,20 +13,14 @@ class EntryRepository {
     try {
       //Test aşamasında daha rahat kullanabilmek için SharedPreferences dışarıdan aldım.
       //SharedPreferences pref = await SharedPreferences.getInstance();
-      print("3");
       bool? switchMode =_cacheManager.cacheGetSwitchMode();
-      print("4");
       if (switchMode != null) {
-        print("5");
         DateTime? time = DateTime.parse(_cacheManager.cacheGetTime()!);
         return Right(EntryModel(time, switchMode));
       } else {
-        print("6");
-        print("null geldi");
         return const Left(NullValueFailure("Hata"));
       }
     } catch (e) {
-      print("7");
       return const Left(CacheFailure("Hata"));
     }
   }
