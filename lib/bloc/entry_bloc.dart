@@ -6,7 +6,6 @@ import 'package:dont_forget/models/failure.dart';
 import 'package:meta/meta.dart';
 
 part 'entry_event.dart';
-
 part 'entry_state.dart';
 
 class EntryBloc extends Bloc<EntryEvent, EntryState> {
@@ -25,7 +24,10 @@ class EntryBloc extends Bloc<EntryEvent, EntryState> {
 
   Future<void> _onCacheGet(event, emit) async {
     emit(EntryLoading());
+    print("1");
     final failureOrEntryModel = await _entryRepository.readCache();
+    print("2");
+
     failureOrEntryModel.fold((failure) =>failure is NullValueFailure?emit(EntryInitial()):EntryError(failure.message), (entryModel) => emit(EntryCompleted(EntryModel(entryModel.time, entryModel.switchMode))));
   }
 }
