@@ -16,7 +16,7 @@ class CacheManager {
     return time;
   }
 
-  void cacheSet(EntryModel entryModel)  {
+  void cacheSet(EntryModel entryModel){
     sharedPreferences.setBool("switchMode", entryModel.switchMode);
     sharedPreferences.setString("time", entryModel.time.toString());
   }

@@ -1,46 +1,59 @@
+import 'package:dartz/dartz.dart';
 import 'package:dont_forget/bloc/entry_bloc.dart';
-import 'package:dont_forget/cacheManager/cache_manager.dart';
 import 'package:dont_forget/infrastructure/entry_repository.dart';
+import 'package:dont_forget/models/entry_model.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class MockEntryRepository extends Mock implements EntryRepository {
-}
+import 'entry_bloc_test.mocks.dart';
+
+@GenerateMocks([EntryRepository])
 
 void main() {
   late MockEntryRepository mockEntryRepository;
-  late EntryBloc moclanmisEntryBloc;
+  late EntryBloc entryBloc;
+  late EntryModel entryModel;
 
-  setUp(()async {
+  setUp(() async {
     mockEntryRepository = MockEntryRepository();
-    moclanmisEntryBloc = EntryBloc(mockEntryRepository);
+    entryBloc = EntryBloc(mockEntryRepository);
+    entryModel = EntryModel(DateTime.now(), true);
   });
 
   group("EntryGet", () {
-
     test(
-      //type 'Null' is not a subtype of type 'Future<Either<Failure, EntryModel>> çözüm(@GenerateMocks([SharedPreferences]))
-      'Moc EntryGet |Successful',
-          () async {
-        moclanmisEntryBloc.add(EntryGet());
-      //  entryBloc.add(EntryGet());
-      },
-    );
-
-    test(
-      'EntryGet |Successful',
-          () async {
-        final sharedPreferences=await SharedPreferences.getInstance();
-        final cacheManager=CacheManager(sharedPreferences);
-        final entryRepository=EntryRepository(cacheManager);
-        final entryBloc=EntryBloc(entryRepository);
+      'readCache |Successful',
+      () async {
+        when(mockEntryRepository.readCache()).thenAnswer((realInvocation) async => Right(EntryModel(DateTime.now(), true)));
         entryBloc.add(EntryGet());
-       // entryBloc.add(EntryGet());
+        await untilCalled(mockEntryRepository.readCache());
+        verify(mockEntryRepository.readCache());
       },
     );
 
+    test(
+      'deneme',
+      () async {
 
+        //Gelmesi gereken emit i dinleyemedim
+
+
+        // Expected: should do the following in order:
+        // * emit an event that <Instance of 'EntryLoading'>
+        // * emit an event that <Instance of 'EntryCompleted'>
+        // Actual: <Instance of 'EntryInitial'>
+        // Which: was not a Stream or a StreamQueue
+
+
+
+        final state = [EntryLoading(),EntryCompleted(entryModel)];
+        when(mockEntryRepository.readCache()).thenAnswer((_) async => Right(entryModel));
+        expectLater(entryBloc, emitsInOrder(state));
+        entryBloc.add(EntryGet());
+
+      },
+    );
 
 
   });

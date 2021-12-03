@@ -5,9 +5,8 @@ import 'package:dont_forget/models/entry_model.dart';
 import 'package:dont_forget/models/failure.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
-class MockSharedPreferences extends Mock implements SharedPreferences {}
+import '../cacheManager/cache_manager_test.mocks.dart';
 
 void main() {
   late MockSharedPreferences mockSharedPreferences;
@@ -77,12 +76,14 @@ void main() {
     test(
       'Should return unit |Successful',
       () async {
+        //when de kullanmam gerektiği için yaptım
+        Future<bool> test() async{
+          return true;
+        }
+        when(mockSharedPreferences.setBool("switchMode",testSwitchMode)).thenAnswer((realInvocation) => test());
+        when(mockSharedPreferences.setString("time",testStringDateTime)).thenAnswer((realInvocation) => test());
 
-        //mockSharedPreferences ile çalışmadı SharedPreferences gitmedi çözüm(@GenerateMocks([SharedPreferences]))
-        final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-        final CacheManager cacheManager = CacheManager(sharedPreferences);
-        final result = await EntryRepository(cacheManager).saveCache(entryModel: testEntryModel);
-
+        final result = await entryRepository.saveCache(entryModel: testEntryModel);
         expect(result, equals(const Right<Failure, Unit>(unit)));
       },
     );
@@ -92,7 +93,6 @@ void main() {
       () async {
         // act
         final result = await entryRepository.saveCache(entryModel: testEntryModel);
-
         expect(result, equals(const Left<Failure, Unit>(CacheFailure("Hata"))));
       },
     );

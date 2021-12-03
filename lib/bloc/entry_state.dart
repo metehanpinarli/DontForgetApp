@@ -1,11 +1,15 @@
 part of 'entry_bloc.dart';
 
 @immutable
-abstract class EntryState {}
+abstract class EntryState{}
 
-class EntryInitial extends EntryState {}
+class EntryInitial extends EntryState {
+  EntryInitial();
+}
 
-class EntryLoading extends EntryState {}
+class EntryLoading extends EntryState {
+  EntryLoading();
+}
 
 class EntryCompleted extends EntryState {
   final EntryModel entryModel;
